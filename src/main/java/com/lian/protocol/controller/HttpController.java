@@ -11,13 +11,12 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -156,6 +155,28 @@ public class HttpController {
         PrintWriter writer = response.getWriter();
         writer.write(json);
         writer.close();
+    }
+
+    @RequestMapping(value = "/requestWithPermission",method = RequestMethod.GET)
+    @ApiOperation("远程调用带有权限的接口")
+    public void requestRemoteWithPermission(HttpServletResponse response, String baseUrl, HttpServletRequest request) throws IOException {
+        String authorization = request.getHeader("Authorization");
+        Map<String, String> stringStringMap = new HashMap<>();
+        stringStringMap.put("Authorization",authorization);
+        Map<String, Object> stringObjectHashMap = HttpClientUtil.myGet(baseUrl,stringStringMap);
+        JSONObject jsonObject = JSONObject.fromObject(stringObjectHashMap);
+        response.setContentType("application/json;charset = utf-8");
+        PrintWriter writer = response.getWriter();
+        writer.write(jsonObject.toString());
+        writer.close();
+    }
+
+
+    @RequestMapping(value = "/calledWithPermission",method = RequestMethod.GET)
+    @ApiOperation("带有权限的远程示例接口")
+    @RequiresRoles("超级管理员")
+    public R<String> calledTestWithPermission(){
+        return new R<>("你通过了权限认证");
     }
 
     @RequestMapping(value = "/calledWithRequestBodyParam",method = RequestMethod.POST)

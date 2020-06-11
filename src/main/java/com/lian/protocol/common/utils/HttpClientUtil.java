@@ -6,6 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
@@ -26,10 +27,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * httpclient工具类
@@ -42,6 +40,24 @@ public class HttpClientUtil {
     final static int TIMEOUT = 10000;
     final static int TIMEOUT_MSEC = 5 * 10000;
 
+    public static Map<String, Object> myGet(String url,Map<String,String> headers) throws IOException {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpGet httpGet = new HttpGet(url);
+        CloseableHttpResponse response = null;
+        Set<String> strings = headers.keySet();
+        strings.forEach(key->httpGet.setHeader(key,headers.get(key)));
+        response = httpClient.execute(httpGet);
+        HttpEntity responseEntity = response.getEntity();
+        log.info("HttpClientUtil响应状态为:" + response.getStatusLine());
+        //获取data内容
+        String data = null;
+        data = EntityUtils.toString(responseEntity, "utf-8");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("data", data);
+        log.info("HttpClientUtil返回的数据" + data);
+        return map;
+    }
+
     /**
      * get请求
      *
@@ -49,13 +65,9 @@ public class HttpClientUtil {
      * @return
      */
     public static HashMap<String, Object> doGet(String url) {
-        //用来返回状态码的内部类
         HashMap<String, Object> map = new HashMap<>();
-        // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        // 创建Get请求
         HttpGet httpGet = new HttpGet(url);
-        // 响应模型
         CloseableHttpResponse response = null;
         try {
             // 配置信息
@@ -69,26 +81,18 @@ public class HttpClientUtil {
                     // 设置是否允许重定向(默认为true)
                     .setRedirectsEnabled(true).build();
 
-            // 将上面的配置信息 运用到这个Get请求里
             httpGet.setConfig(requestConfig);
-            // 由客户端执行(发送)Get请求
             response = httpClient.execute(httpGet);
-            // 从响应模型中获取响应实体
             HttpEntity responseEntity = response.getEntity();
             log.info("HttpClientUtil响应状态为:" + response.getStatusLine());
-            //获取data内容
             String data = null;
             data = EntityUtils.toString(responseEntity, "utf-8");
             map.put("data", data);
             log.info("HttpClientUtil返回的数据" + data);
             return map;
-        } catch (ClientProtocolException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+        }finally {
             try {
                 // 释放资源
                 if (httpClient != null) {
@@ -114,29 +118,12 @@ public class HttpClientUtil {
      */
     public static String doPost(String url, String jsonParam, String contentType) {
         try {
-            SSLContext sslContext = null;
-            try {
-                sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
-                    @Override
-                    public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                        return true;
-                    }
-                }).build();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyManagementException e) {
-                e.printStackTrace();
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
-            }
-            CloseableHttpClient httpclient = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
+            CloseableHttpClient httpClient = buildSSLContext();
             HttpPost post = new HttpPost(url);
-            //httpClient 4.5版本的超时参数配置
             RequestConfig requestConfig = RequestConfig.custom()
                     .setConnectTimeout(10000).setConnectionRequestTimeout(10000)
                     .setSocketTimeout(10000).build();
             post.setConfig(requestConfig);
-            //往BODY里填充数据主体
             StringEntity entitys = new StringEntity(jsonParam, "utf-8");
             entitys.setContentEncoding("UTF-8");
             if (contentType != null) {
@@ -146,8 +133,7 @@ public class HttpClientUtil {
                     entitys.setContentType("application/json");
             }
             post.setEntity(entitys);
-            HttpResponse response = httpclient.execute(post);
-            //获取data内容
+            HttpResponse response = httpClient.execute(post);
             String data = EntityUtils.toString(response.getEntity(), "utf-8");
             log.info("HttpClientUtil返回的数据" + data);
             return data;
@@ -168,26 +154,21 @@ public class HttpClientUtil {
      * @throws IOException
      */
     public static String doPost(String url, Map<String, String> paramMap) throws IOException {
-        // 创建Httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         String resultString = "";
         try {
-            // 创建Http Post请求
             HttpPost httpPost = new HttpPost(url);
-            // 创建参数列表
             if (paramMap != null) {
                 List<NameValuePair> paramList = new ArrayList<>();
                 for (Map.Entry<String, String> param : paramMap.entrySet()) {
                     paramList.add(new BasicNameValuePair(param.getKey(), param.getValue()));
                 }
-                // 模拟表单
                 UrlEncodedFormEntity entity = new UrlEncodedFormEntity(paramList);
                 entity.setContentEncoding("UTF-8");
                 httpPost.setEntity(entity);
             }
             httpPost.setConfig(builderRequestConfig());
-            // 执行http请求
             response = httpClient.execute(httpPost);
             resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
         } catch (Exception e) {
@@ -203,6 +184,55 @@ public class HttpClientUtil {
         return resultString;
     }
 
+
+    /**
+     * patch请求
+     *
+     * @param url
+     * @return
+     */
+    public static String doPatch(String url) {
+        try {
+            CloseableHttpClient httpClient = buildSSLContext();
+            HttpPatch patch = new HttpPatch(url);
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectTimeout(10000).setConnectionRequestTimeout(10000)
+                    .setSocketTimeout(10000).build();
+            patch.setConfig(requestConfig);
+            HttpResponse response = httpClient.execute(patch);
+            String data = EntityUtils.toString(response.getEntity(), "utf-8");
+            log.info("HttpClientUtil返回的数据" + data);
+            return data;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    /**
+     * delete参数
+     * @param url
+     * @return
+     */
+    public static String doDelete(String url) {
+        try {
+            CloseableHttpClient httpClient = buildSSLContext();
+            HttpDelete delete = new HttpDelete(url);
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectTimeout(10000).setConnectionRequestTimeout(10000)
+                    .setSocketTimeout(10000).build();
+            delete.setConfig(requestConfig);
+            HttpResponse response = httpClient.execute(delete);
+            String data = EntityUtils.toString(response.getEntity(), "utf-8");
+            log.info("HttpClientUtil返回的数据" + data);
+            return data;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+
     /**
      * 请求参数配置
      *
@@ -216,87 +246,28 @@ public class HttpClientUtil {
     }
 
     /**
-     * patch请求
+     * 忽略安全证书设置
      *
-     * @param url
      * @return
      */
-    public static String doPatch(String url) {
+    public static CloseableHttpClient buildSSLContext(){
+        SSLContext sslContext = null;
         try {
-            SSLContext sslContext = null;
-            try {
-                sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
-                    @Override
-                    public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                        return true;
-                    }
-                }).build();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyManagementException e) {
-                e.printStackTrace();
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
-            }
-            CloseableHttpClient httpclient = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
-            HttpPatch patch = new HttpPatch(url);
-            //httpClient 4.5版本的超时参数配置
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectTimeout(10000).setConnectionRequestTimeout(10000)
-                    .setSocketTimeout(10000).build();
-            patch.setConfig(requestConfig);
-            HttpResponse response = httpclient.execute(patch);
-            //获取data内容
-            String data = EntityUtils.toString(response.getEntity(), "utf-8");
-            log.info("HttpClientUtil返回的数据" + data);
-            return data;
-        } catch (ClientProtocolException e) {
-            log.error(e.getMessage(), e);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
+                @Override
+                public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                    return true;
+                }
+            }).build();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
         }
-        return null;
-    }
 
-    /**
-     * delete参数
-     * @param url
-     * @return
-     */
-    public static String doDelete(String url) {
-        try {
-            SSLContext sslContext = null;
-            try {
-                sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
-                    @Override
-                    public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                        return true;
-                    }
-                }).build();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyManagementException e) {
-                e.printStackTrace();
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
-            }
-            CloseableHttpClient httpclient = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
-            HttpDelete delete = new HttpDelete(url);
-            //httpClient 4.5版本的超时参数配置
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectTimeout(10000).setConnectionRequestTimeout(10000)
-                    .setSocketTimeout(10000).build();
-            delete.setConfig(requestConfig);
-            HttpResponse response = httpclient.execute(delete);
-            //获取data内容
-            String data = EntityUtils.toString(response.getEntity(), "utf-8");
-            log.info("HttpClientUtil返回的数据" + data);
-            return data;
-        } catch (ClientProtocolException e) {
-            log.error(e.getMessage(), e);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
-        return null;
+        CloseableHttpClient httpclient = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
+        return httpclient;
     }
 }
