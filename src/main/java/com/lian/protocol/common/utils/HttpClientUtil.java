@@ -195,10 +195,7 @@ public class HttpClientUtil {
         try {
             CloseableHttpClient httpClient = buildSSLContext();
             HttpPatch patch = new HttpPatch(url);
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectTimeout(10000).setConnectionRequestTimeout(10000)
-                    .setSocketTimeout(10000).build();
-            patch.setConfig(requestConfig);
+            patch.setConfig(builderRequestConfig());
             HttpResponse response = httpClient.execute(patch);
             String data = EntityUtils.toString(response.getEntity(), "utf-8");
             log.info("HttpClientUtil返回的数据" + data);
@@ -218,10 +215,7 @@ public class HttpClientUtil {
         try {
             CloseableHttpClient httpClient = buildSSLContext();
             HttpDelete delete = new HttpDelete(url);
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectTimeout(10000).setConnectionRequestTimeout(10000)
-                    .setSocketTimeout(10000).build();
-            delete.setConfig(requestConfig);
+            delete.setConfig(builderRequestConfig());
             HttpResponse response = httpClient.execute(delete);
             String data = EntityUtils.toString(response.getEntity(), "utf-8");
             log.info("HttpClientUtil返回的数据" + data);
@@ -253,20 +247,12 @@ public class HttpClientUtil {
     public static CloseableHttpClient buildSSLContext(){
         SSLContext sslContext = null;
         try {
-            sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
-                @Override
-                public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                    return true;
-                }
+            sslContext = SSLContexts.custom().loadTrustMaterial(null, (x509Certificates,s)-> {
+                return true;
             }).build();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {
 
+        }
         CloseableHttpClient httpclient = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
         return httpclient;
     }
