@@ -27,12 +27,11 @@ public class MyHttpClient {
         HttpURLConnection httpURLConnection = null;
         switch (method){
             case "POST":
-                buildHttpConnectionByURI(method,strUrl,headers,params);
+                 httpURLConnection = buildHttpConnectionByURI(method, strUrl, headers, params);
                 break;
             case "GET":
-                buildHttpConnectionByURI(method,strUrl,headers,params);
+                httpURLConnection = buildHttpConnectionByURI(method, strUrl, headers, params);
         }
-
 
         InputStream inputStream = null;
         ByteArrayOutputStream baos = null;
@@ -51,6 +50,7 @@ public class MyHttpClient {
             System.out.println(jsonContent);
             return jsonContent;
         }catch (Exception e){
+            e.printStackTrace();
             log.info("发生异常"+e.getMessage());
         }finally {
             if(inputStream != null){inputStream.close();}

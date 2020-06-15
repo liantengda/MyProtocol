@@ -61,7 +61,7 @@ public class MyHttpController {
 
     @RequestMapping(value = "requestPost",method = RequestMethod.GET)
     @ApiOperation("远程调用post示例接口")
-    public void requestPost(String baseUrl,HttpServletResponse response){
+    public void requestPost(String baseUrl,HttpServletResponse response) throws Exception {
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization","hehe");
@@ -74,8 +74,12 @@ public class MyHttpController {
         user.setPhone("18434367785");
         user.setPassword("78685");
         user.setId(1L);
-//        MyHttpClient.execute(baseUrl,headers,"POST",params,)
-
+        JSONObject jsonObject = JSONObject.fromObject(user);
+        JSONObject post = MyHttpClient.execute(baseUrl, headers, "POST", params, jsonObject);
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset= utf8");
+        PrintWriter writer = response.getWriter();
+        writer.write(post.toString());
     }
 
     @RequestMapping(value = "calledTestPost",method = RequestMethod.POST)
