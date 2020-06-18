@@ -1,18 +1,15 @@
 package com.lian.protocol.controller;
 
-import cn.hutool.json.JSONUtil;
 import com.lian.protocol.common.globalexception.pojo.response.R;
 import com.lian.protocol.common.utils.HttpClientUtil;
 import com.lian.protocol.common.utils.JaxbUtil;
 import com.lian.protocol.model.User;
-import com.lian.protocol.service.HttpService;
+import com.lian.protocol.service.ApacheHttpClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
-import net.sf.json.util.JSONUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +28,10 @@ import java.util.Map;
 @RequestMapping(value = "/http")
 @Slf4j
 @Api(tags = "http测试接口")
-public class HttpController {
+public class ApacheHttpClientController {
 
     @Autowired
-    HttpService httpService;
+    ApacheHttpClientService httpService;
 
     @RequestMapping(value = "/getWriteException",method = RequestMethod.GET)
     @ApiOperation("重复getWriter报错")

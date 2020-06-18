@@ -3,19 +3,19 @@ package com.lian.protocol.controller;
 import com.lian.protocol.common.globalexception.pojo.response.R;
 import com.lian.protocol.common.utils.MyHttpClient;
 import com.lian.protocol.model.User;
+import com.lian.protocol.service.MyHttpService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * @author Ted
@@ -27,59 +27,41 @@ import java.util.Map;
 @Api(tags = "myHttp测试接口")
 public class MyHttpController {
 
+    @Autowired
+    MyHttpService myHttpService;
+
     @RequestMapping(value = "/requestWithoutRequestParam",method = RequestMethod.GET)
     @ApiOperation("远程调用不带参数的get接口")
-    public void   requestWithoutParamByMyHttpClient(String baseUrl, HttpServletResponse response) throws Exception {
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Authorization","hehe");
-        HashMap<String, Object> params = new HashMap<>();
-        JSONObject jsonObject = new JSONObject();
-        JSONObject get = MyHttpClient.execute(baseUrl, headers, "GET",params,jsonObject);
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("application/json;charset= utf8");
-        PrintWriter writer = response.getWriter();
-        writer.print(get);
-        writer.close();
+    public void   requestWithoutParamByMyHttpClient(String baseUrl, HttpServletResponse response)  {
+       myHttpService.doGetWithoutParam(baseUrl,response);
     }
 
     @RequestMapping(value = "/requestWithUrlParam",method = RequestMethod.GET)
     @ApiOperation("远程调用带有url参数的get接口")
-    public void   requestWithUrlParamsByMyHttpClient(String baseUrl, HttpServletResponse response) throws Exception {
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Authorization","hehe");
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("name","ted");
-        params.put("age",18);
-        JSONObject jsonObject = new JSONObject();
-        JSONObject get = MyHttpClient.execute(baseUrl, headers, "GET",params,jsonObject);
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("application/json;charset= utf8");
-        PrintWriter writer = response.getWriter();
-        writer.print(get);
-        writer.close();
+    public void   requestWithUrlParamsByMyHttpClient(String baseUrl, HttpServletResponse response)  {
+        myHttpService.doGetWithParam(baseUrl,response);
     }
 
     @RequestMapping(value = "requestPost",method = RequestMethod.GET)
     @ApiOperation("远程调用post示例接口")
-    public void requestPost(String baseUrl,HttpServletResponse response) throws Exception {
+    public void requestPost(String baseUrl,HttpServletResponse response) {
+       myHttpService.doPostWithoutUrlParam(baseUrl,response);
+    }
 
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Authorization","hehe");
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("name","ted");
-        params.put("age",18);
-        User user = new User();
-        user.setCreateTime(System.currentTimeMillis());
-        user.setName("ted");
-        user.setPhone("18434367785");
-        user.setPassword("78685");
-        user.setId(1L);
-        JSONObject jsonObject = JSONObject.fromObject(user);
-        JSONObject post = MyHttpClient.execute(baseUrl, headers, "POST", params, jsonObject);
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("application/json;charset= utf8");
-        PrintWriter writer = response.getWriter();
-        writer.write(post.toString());
+    @RequestMapping(value = "requestPostUrl",method = RequestMethod.GET)
+    @ApiOperation("远程调用带有url参数的Post接口")
+    public void requestPostWithUrlParam(String baseUrl,HttpServletResponse response)  {
+        myHttpService.doPostWithUrlParam(baseUrl,response);
+    }
+
+
+    @RequestMapping(value = "calledTestPostWithUrl",method = RequestMethod.POST)
+    @ApiOperation("post请求远程示例带有url参数")
+    public R<JSONObject> calledTestPostWithUrl(@RequestBody User user,String urlParam){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("user",user);
+        jsonObject.put("urlParm",urlParam);
+        return new R<>(jsonObject);
     }
 
     @RequestMapping(value = "calledTestPost",method = RequestMethod.POST)

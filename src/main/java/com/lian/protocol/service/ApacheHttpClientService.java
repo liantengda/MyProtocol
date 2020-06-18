@@ -7,7 +7,7 @@ import java.io.IOException;
  * @author Ted
  * @date 2020/6/10 16:32
  */
-public interface HttpService {
+public interface ApacheHttpClientService {
 
     void test(String baseUrl, HttpServletResponse response) throws IOException;
 
