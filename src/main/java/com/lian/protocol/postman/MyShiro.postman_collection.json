@@ -1,0 +1,667 @@
+{
+	"info": {
+		"_postman_id": "d7699d25-0adb-44cd-ab7b-986b91fa1714",
+		"name": "MyShiro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "用户管理",
+			"item": [
+				{
+					"name": "用户注册接口",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":1010,\n\t\"name\":\"喵喵喵\",\n\t\"password\":\"123456\",\n\t\"phone\":\"18434365574\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "用户密码登陆接口",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/user/logIn?phone=18909877890&password=1234567",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"logIn"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "18909877890"
+								},
+								{
+									"key": "password",
+									"value": "1234567"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询个人信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxMjk3Nzk1fQ.pUwugEYWP7D8dGr0N0WtyOuxeRPMnLcjBGnL_yCykmM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/user/1010",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"1010"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更改用户个人信息",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxMjk3Nzk1fQ.pUwugEYWP7D8dGr0N0WtyOuxeRPMnLcjBGnL_yCykmM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":1010,\n\t\"name\":\"咪咪咪\",\n\t\"password\":\"123456\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/user/update",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "用户注销",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxMjk3Nzk1fQ.pUwugEYWP7D8dGr0N0WtyOuxeRPMnLcjBGnL_yCykmM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/user/logOff/1010",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"logOff",
+								"1010"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询用户列表（管理员权限）",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxNTYzODQyfQ.BmpUihawMObv-AkWpXdWabIqiRb9GL1S8OadvC1h1l0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/user/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "根据用户id查询用户角色列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxNTY0MTk4fQ.OaL92ozZnu2wsejq2Hox4I00_M7PPJFMTYMmva3i-MI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/user/listRole/8",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"listRole",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "根据用户id查询用户权限列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxMzcxOTEwfQ.mEwfXEi8ZY-I5gOyUjjC5Z2_-8p-wvOi7yjb0DxcQz0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/user/listPermission/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"listPermission",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "训斥纪晓岚",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OCwiZXhwIjoxNTkxNTY0NDEyfQ.4xhAQaGhTvbWzlJd-O5G_JCp8EeZ6O2CD84SV5R4yao",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/user/abuseJXL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"abuseJXL"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "用户角色关联",
+			"item": [
+				{
+					"name": "添加角色用户关联记录",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxNTY0NzE0fQ.9IoumoSQToAkudixCQVJjRQ4LRVMMMd0xzz7iXvgiU8",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":20,\n\t\"userId\":8,\n\t\"roleId\":12\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/roleUser/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"roleUser",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "根据用户id分组查询每个用户的角色列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxMzUwMTAyfQ.Ufb39KvnerjV2FmBsIi781gR7R4sI5W5FOLj6jgTmSA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/roleUser/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"roleUser",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "角色管理",
+			"item": [
+				{
+					"name": "查询角色列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxNTYyMzIzfQ.1gbk4QtUasCeArHgojIHFrQe8pXJMGH9-6s-18XDJhk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/role/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"role",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增角色",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxNTY0NzE0fQ.9IoumoSQToAkudixCQVJjRQ4LRVMMMd0xzz7iXvgiU8",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":12,\n\t\"roleName\":\"杜小月丫鬟\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/role/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"role",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "修改角色信息",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxMzAwMjk3fQ.-SismRM9H79Ehos3dfiIknLYhCZiNQ2bENfcQn1VWaA",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":12,\n\t\"roleName\":\"打铁的\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/role/update",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"role",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询单个角色信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxMzAwNTIwfQ.jBBsNOjmpnCXn1LsWNIXn3wUcHP9RQALt31_2MneckM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/role/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"role",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除角色",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxNTQ2MzEwfQ.hnNJkftFU9S-YV46o-ZbDfF1hGHVUL3yHJxBMtifZck",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/role/delete/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"role",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "角色权限关联",
+			"item": [
+				{
+					"name": "添加角色权限关联记录",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxMzYxODMxfQ.yvFsvsdIqsZbvXrbp2BiD4rahTlv4nyuiku7G3tU1dE",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":1010,\n\t\"roleId\":1,\n\t\"permissionId\":2\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/permissionRole/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"permissionRole",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "权限管理",
+			"item": [
+				{
+					"name": "添加权限",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxMzQ2MzE3fQ.hGF6RMBdG1d11SKj2QDTykszRtDyXLk_5tzA1WFLv4o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":19,\n\t\"name\":\"纪府姑娘\",\n\t\"url\":\"hehe\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/permission/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"permission",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询单个权限信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxMzQ2MDA5fQ.NaN4a9S7agAi8-Mhz-OtLRQpec6OZLWEikJbG4pzfF0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/permission/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"permission",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新权限",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxMzQ2MzE3fQ.hGF6RMBdG1d11SKj2QDTykszRtDyXLk_5tzA1WFLv4o",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":19,\n\t\"name\":\"杏儿\",\n\t\"url\":\"hehehe\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/permission/update",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"permission",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询权限列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZXhwIjoxNTkxMzQ2NTUzfQ.HENa_Nv5UaEbeX7u8O8PT3SZRg-sULbCL6-qRcUiGMQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/permission/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"permission",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除权限",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxMzQ2MzE3fQ.hGF6RMBdG1d11SKj2QDTykszRtDyXLk_5tzA1WFLv4o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/permission/delete/19",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"permission",
+								"delete",
+								"19"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

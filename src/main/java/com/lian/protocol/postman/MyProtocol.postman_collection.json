@@ -1,0 +1,449 @@
+{
+	"info": {
+		"_postman_id": "55225aaf-73ae-4220-bc18-0e19d691b03f",
+		"name": "MyProtocol",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ApacheHttpClient",
+			"item": [
+				{
+					"name": "重复获取getWriter报错",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/getWriteException?baseUrl=http://localhost:8080/http/calledNotRequestParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"getWriteException"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledNotRequestParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "响应一个字符串设置了数据类型",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/writeStringSetContentType?baseUrl=http://localhost:8080/http/calledNotRequestParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"writeStringSetContentType"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledNotRequestParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "响应带有双引号的map",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/writeMapWithDoubleQuotationMark?baseUrl=http://localhost:8080/http/calledNotRequestParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"writeMapWithDoubleQuotationMark"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledNotRequestParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "响应一个字符串不设置类型",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/writeStringNotSetContentType?baseUrl=http://localhost:8080/http/calledNotRequestParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"writeStringNotSetContentType"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledNotRequestParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "响应不带双引号的map",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/writeMapWithoutDoubleQuotationMark?baseUrl=http://localhost:8080/http/calledNotRequestParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"writeMapWithoutDoubleQuotationMark"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledNotRequestParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "远程请求带有url参数的接口",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/requestWithUrlParam?baseUrl=http://localhost:8080/http/calledWithRequestUrl",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"requestWithUrlParam"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledWithRequestUrl"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "远程请求不带url参数的接口",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/requestWithoutUrlParam?baseUrl=http://localhost:8080/http/calledNotRequestParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"requestWithoutUrlParam"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledNotRequestParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "远程请求带有请求体的参数通过Json字符串",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/requestWithResponseBodyParamByJson?baseUrl=http://localhost:8080/http/calledWithRequestBodyParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"requestWithResponseBodyParamByJson"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledWithRequestBodyParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "远程请求带有请求体参数的接口，通过String请求报错",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/requestWithResponseBodyParamByString?baseUrl=http://localhost:8080/http/calledWithRequestBodyParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"requestWithResponseBodyParamByString"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledWithRequestBodyParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "远程请求带有请求体参数的接口，通过xml方式传参",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/http/requestWithResponseBodyParamByXml?baseUrl=http://localhost:8080/http/calledWithRequestBodyParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"requestWithResponseBodyParamByXml"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledWithRequestBodyParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "远程请求带有权限的接口",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkxOTc0NjAxfQ.PGEGDv4NXUH276lTRqLAUA6JaOsRnGcYQt5r1IL14ZY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/http/requestWithPermission?baseUrl=http://localhost:8080/http/calledWithPermission",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"http",
+								"requestWithPermission"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/http/calledWithPermission"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "JDKHttpURLConnection",
+			"item": [
+				{
+					"name": "原生JDK实现不带参数的GET请求",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/myHttp/requestWithoutRequestParam?baseUrl=http://localhost:8080/myHttp/calledNotRequestParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"myHttp",
+								"requestWithoutRequestParam"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/myHttp/calledNotRequestParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "原生JDK实现带有参数的GET请求",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/myHttp/requestWithUrlParam?baseUrl=http://localhost:8080/myHttp/calledWithUrlParam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"myHttp",
+								"requestWithUrlParam"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/myHttp/calledWithUrlParam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "使用原生JDK实现POST请求",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/myHttp/requestPost?baseUrl=http://localhost:8080/myHttp/calledTestPost",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"myHttp",
+								"requestPost"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/myHttp/calledTestPost"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "原生JDK请求带有URL参数的Post接口",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/myHttp/requestPostUrl?baseUrl=http://localhost:8080/myHttp/calledTestPostWithUrl",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"myHttp",
+								"requestPostUrl"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://localhost:8080/myHttp/calledTestPostWithUrl"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "原生JDK远程调用带有URL参数且需要权限认证的POST接口",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkyODM3MTY5fQ.DQ7wrxWlbc2BYLkxJWYTMm6O7By6GrLhgg6VfpWqPOg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/myHttp/requestPostUrlAndAuth?baseUrl=http://127.0.0.1:8080/myHttp/postWithUrlParamAndAuth",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"myHttp",
+								"requestPostUrlAndAuth"
+							],
+							"query": [
+								{
+									"key": "baseUrl",
+									"value": "http://127.0.0.1:8080/myHttp/postWithUrlParamAndAuth"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
