@@ -2,6 +2,7 @@ package com.lian.protocol.service;
 
 import com.sun.xml.internal.ws.resources.HttpserverMessages;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -17,4 +18,6 @@ public interface MyHttpService {
     void doPostWithoutUrlParam(String baseUrl, HttpServletResponse response);
 
     void doPostWithUrlParam(String baseUrl,HttpServletResponse response);
+
+    void doPostWithUrlParamAndAuth(String baseUrl,HttpServletResponse response, HttpServletRequest request);
 }

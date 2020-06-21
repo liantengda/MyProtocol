@@ -23,23 +23,28 @@ public class MyHttpClient {
     private static final String ENCODING_FORMAT = "UTF-8";
 
 
-    public static JSONObject execute(String strUrl,Map<String,Object> params,Map<String,String> headers,String method,JSONObject requestBody){
+    public static JSONObject execute(String strUrl,Map<String,Object> params,
+                                     Map<String,String> headers,String method,
+                                     JSONObject requestBody){
         HttpURLConnection httpURLConnection = null;
-        switch (method){
-            case "POST":
-                 httpURLConnection = buildHttpConnectionWithRequestBody(method, strUrl, headers, params,requestBody);
-                break;
-            case "GET":
-                httpURLConnection = buildHttpConnectionWithoutRequestBody(method, strUrl, headers, params);
-        }
-
         InputStream inputStream = null;
         ByteArrayOutputStream baos = null;
         try {
+            switch (method){
+                case "POST":
+                    httpURLConnection =
+                            buildHttpConnectionWithRequestBody(method, strUrl, headers, params,requestBody);
+                    break;
+                case "GET":
+                    httpURLConnection =
+                            buildHttpConnectionWithoutRequestBody(method, strUrl, headers, params);
+            }
+            //建立TCP连接
             httpURLConnection.connect();
+            //发起HTTP请求
             inputStream = httpURLConnection.getInputStream();
+            //得到响应状态码
             int responseCode = httpURLConnection.getResponseCode();
-            System.out.println(responseCode);
             baos = new ByteArrayOutputStream();
             byte[] bytes = new byte[1024];
             int size = 0;
@@ -47,16 +52,19 @@ public class MyHttpClient {
                 baos.write(bytes,0,size);
             }
             byte[] byteContent = baos.toByteArray();
+            //从Http请求后的输入流中的到响应体
             String strContent = new String(byteContent,"utf-8");
             JSONObject jsonContent = JSONObject.fromObject(strContent);
-            System.out.println(jsonContent);
+            jsonContent.put("status",responseCode);
             return jsonContent;
         }catch (Exception e){
             e.printStackTrace();
             log.info("发生异常"+e.getMessage());
         }finally {
             try {
-                if(inputStream != null){inputStream.close();}
+                if(inputStream != null) {
+                    inputStream.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }finally {
@@ -72,9 +80,13 @@ public class MyHttpClient {
         return null;
     }
 
-    public static HttpURLConnection buildHttpConnectionWithRequestBody(String method, String strUrl, Map<String,String> headers, Map<String,Object> urlParams, JSONObject requestBody) {
+    public static HttpURLConnection buildHttpConnectionWithRequestBody(String method, String strUrl,
+                                                                       Map<String,String> headers,
+                                                                       Map<String,Object> urlParams,
+                                                                       JSONObject requestBody) {
         HttpURLConnection httpURLConnection = null;
         try{
+            //构建请求url
             URL  url= new URL(strUrl+builderUrlParam(urlParams));
             if(httpURLConnection == null){
                 httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -88,11 +100,12 @@ public class MyHttpClient {
             for (Map.Entry<String,String> entry:headers.entrySet()){
                 httpURLConnection.setRequestProperty(entry.getKey(),entry.getValue());
             }
+            //向输出流中写入请求体
             PrintWriter printWriter = new PrintWriter(httpURLConnection.getOutputStream());
             printWriter.write(requestBody.toString());
             printWriter.flush();
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         return httpURLConnection;
     }

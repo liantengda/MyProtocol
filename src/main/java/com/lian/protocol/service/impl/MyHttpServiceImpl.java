@@ -6,6 +6,7 @@ import com.lian.protocol.service.MyHttpService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -110,5 +111,36 @@ public class MyHttpServiceImpl implements MyHttpService {
             e.printStackTrace();
         }
         writer.write(post.toString());
+    }
+
+    @Override
+    public void doPostWithUrlParamAndAuth(String baseUrl, HttpServletResponse response,HttpServletRequest request) {
+        //请求首部
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization",request.getHeader("Authorization"));
+        headers.put("Content-Type","application/json");
+        //请求url参数
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("urlParam","ted");
+        //请求体
+        User user = new User();
+        user.setCreateTime(System.currentTimeMillis());
+        user.setName("ted");
+        user.setPhone("18434367785");
+        user.setPassword("78685");
+        user.setId(1L);
+        JSONObject jsonObject = JSONObject.fromObject(user);
+        //请求方法POST，请求url为baseUrl，请求之后返回来的响应体post。
+        JSONObject post = MyHttpClient.execute(baseUrl, params, headers, "POST", jsonObject);
+        //响应首部
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset= utf8");
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.write(post.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

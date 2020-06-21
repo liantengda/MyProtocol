@@ -8,12 +8,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
@@ -52,6 +55,28 @@ public class MyHttpController {
     @ApiOperation("远程调用带有url参数的Post接口")
     public void requestPostWithUrlParam(String baseUrl,HttpServletResponse response)  {
         myHttpService.doPostWithUrlParam(baseUrl,response);
+    }
+
+
+    @RequestMapping(value = "requestPostUrlAndAuth",method = RequestMethod.GET)
+    @ApiOperation("远程调用带有url参数并且需要权限验证的post接口")
+    public void requestPostWithUrlParamAndAuthorization(String baseUrl,
+                                                        HttpServletResponse response,
+                                                        HttpServletRequest request){
+        myHttpService.doPostWithUrlParamAndAuth(baseUrl,response,request);
+    }
+
+    @RequestMapping(value = "postWithUrlParamAndAuth",method = RequestMethod.POST)
+    @ApiOperation("post请求远程示例带有url参数并且带有权限认证头部信息")
+    @RequiresRoles("超级管理员")
+    public R<JSONObject> calledTestPostWithUrlAndAuthorization(@RequestBody User user,
+                                                               String urlParam,
+                                                               HttpServletRequest request){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("user",user);
+        jsonObject.put("urlParam",urlParam);
+        jsonObject.put("token",request.getHeader("Authorization"));
+        return new R<>(jsonObject);
     }
 
 
